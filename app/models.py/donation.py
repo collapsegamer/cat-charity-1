@@ -7,4 +7,4 @@ class Donation(InvestedBase):
     __tablename__ = "donation"
 
     id = Column(Integer, primary_key=True)
-    comment = Column(Text, nullable=True)
+    comment = Column(Text)
