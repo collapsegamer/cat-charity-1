@@ -1,35 +1,30 @@
 from datetime import datetime
+from typing import Optional
 
-from pydantic import BaseModel, PositiveInt, constr
+from pydantic import BaseModel, ConfigDict, Field, PositiveInt
 
 
-class CharityProjectCreate(BaseModel):
-    name: constr(min_length=5, max_length=100)
-    description: constr(min_length=10)
+class CharityProjectBase(BaseModel):
+    name: str = Field(min_length=5, max_length=100)
+    description: str = Field(min_length=10)
     full_amount: PositiveInt
-
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(from_attributes=True, extra='forbid')
 
 
-class CharityProjectUpdate(BaseModel):
-    name: constr(min_length=5, max_length=100) | None = None
-    description: constr(min_length=10) | None = None
-    full_amount: PositiveInt | None = None
-
-    class Config:
-        extra = "forbid"
+class CharityProjectCreate(CharityProjectBase):
+    pass
 
 
-class CharityProjectDB(BaseModel):
+class CharityProjectDB(CharityProjectBase):
     id: int
-    name: str
-    description: str
-    full_amount: int
     invested_amount: int
     fully_invested: bool
     create_date: datetime
-    close_date: datetime | None = None
+    close_date: Optional[datetime] = None
+    model_config = ConfigDict(from_attributes=True)
 
-    class Config:
-        from_attributes = True
+
+class CharityProjectUpdate(CharityProjectBase):
+    name: Optional[str] = Field(None, min_length=5, max_length=100)
+    description: Optional[str] = Field(None, min_length=10)
+    full_amount: Optional[PositiveInt] = None

@@ -1,38 +1,28 @@
 from datetime import datetime
+from typing import Optional
 
-from pydantic import BaseModel, PositiveInt
+from pydantic import BaseModel, ConfigDict, PositiveInt
+
+
+class DonationBase(BaseModel):
+    full_amount: PositiveInt
+    comment: Optional[str] = None
 
 
 class DonationCreate(BaseModel):
     full_amount: PositiveInt
-    comment: str | None = None
-
-    class Config:
-        extra = "forbid"
+    comment: Optional[str] = None
 
 
-# POST /donation/ — строго "короткий" ответ (без invested_amount/fully_invested)
-# + exclude_none в эндпоинте, чтобы comment не приходил как null, если его не было
-class DonationCreateResponse(BaseModel):
+class DonationResponse(DonationBase):
     id: int
-    full_amount: int
-    comment: str | None = None
     create_date: datetime
-    close_date: datetime | None = None
-
-    class Config:
-        from_attributes = True
 
 
-# GET /donation/ — полный ответ
-class DonationFullInfoDB(BaseModel):
+class DonationDB(DonationBase):
     id: int
-    full_amount: int
-    comment: str | None = None
-    create_date: datetime
     invested_amount: int
-    fully_invested: bool
-    close_date: datetime | None = None
-
-    class Config:
-        from_attributes = True
+    fully_invested: Optional[bool] = False
+    create_date: datetime
+    close_date: Optional[datetime] = None
+    model_config = ConfigDict(from_attributes=True)
