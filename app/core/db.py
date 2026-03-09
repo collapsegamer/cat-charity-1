@@ -1,28 +1,35 @@
-from sqlalchemy import Integer
-from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
-from sqlalchemy.orm import (
-    DeclarativeBase,
-    Mapped,
-    declared_attr,
-    mapped_column
+"""Модуль для работы с асинхронным подключением к базе данных."""
+
+from typing import AsyncGenerator
+
+from sqlalchemy.ext.asyncio import (
+    AsyncSession,
+    create_async_engine,
 )
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 from app.core.config import settings
 
+DATABASE_URL = settings.database_url
 
-class Base(DeclarativeBase):
+engine = create_async_engine(
+    DATABASE_URL,
+    future=True,
+    echo=False,
+)
 
-    @declared_attr
-    def __tablename__(cls):
-        return cls.__name__.lower()
+AsyncSessionLocal = sessionmaker(
+    bind=engine,
+    class_=AsyncSession,
+    expire_on_commit=False,
+    autoflush=False,
+    autocommit=False,
+)
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+Base = declarative_base()
 
 
-engine = create_async_engine(settings.database_url)
-AsyncSessionLocal = async_sessionmaker(engine, expire_on_commit=False)
-
-
-async def get_async_session():
-    async with AsyncSessionLocal() as async_session:
-        yield async_session
+async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
+    """Возвращает асинхронную сессию базы данных."""
+    async with AsyncSessionLocal() as session:
+        yield session

@@ -1,15 +1,22 @@
-from typing import Optional
+"""Модуль с настройками приложения."""
 
-from pydantic_settings import BaseSettings, SettingsConfigDict
-
-from app.constants import APP_TITLE, DATABASE_URL, DESCRIPTION
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file='.env')
-    app_title: str = APP_TITLE
-    description: str = DESCRIPTION
-    database_url: Optional[str] = DATABASE_URL
+    """Параметры конфигурации приложения."""
+
+    app_title: str = "QRKot"
+    description: str = (
+        "Благотворительный фонд поддержки котиков QRKot"
+    )
+    database_url: str = "sqlite+aiosqlite:///./fastapi.db"
+
+    class Config:
+        """Настройки загрузки переменных окружения."""
+
+        env_file = ".env"
+        env_file_encoding = "utf-8"
 
 
 settings = Settings()
