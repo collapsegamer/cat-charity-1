@@ -1,5 +1,3 @@
-"""Базовая абстрактная модель для сущностей с инвестициями."""
-
 from datetime import datetime
 
 from sqlalchemy import Boolean, Column, DateTime, Integer
@@ -8,8 +6,6 @@ from app.core.db import Base
 
 
 class InvestmentBase(Base):
-    """Абстрактная модель с полями инвестирования."""
-
     __abstract__ = True
 
     id = Column(Integer, primary_key=True)

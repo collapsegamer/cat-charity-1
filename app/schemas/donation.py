@@ -1,5 +1,3 @@
-"""Схемы данных для работы с пожертвованиями."""
-
 from datetime import datetime
 from typing import Optional
 
@@ -8,8 +6,6 @@ from pydantic import ConfigDict
 
 
 class DonationCreate(BaseModel):
-    """Схема создания пожертвования."""
-
     full_amount: PositiveInt
     comment: Optional[str] = None
 
@@ -17,8 +13,6 @@ class DonationCreate(BaseModel):
 
 
 class DonationDB(DonationCreate):
-    """Схема пожертвования для возврата из БД."""
-
     id: int
     create_date: datetime
     close_date: Optional[datetime] = None
@@ -27,7 +21,5 @@ class DonationDB(DonationCreate):
 
 
 class DonationFullInfoDB(DonationDB):
-    """Полная информация о пожертвовании."""
-
     invested_amount: int
     fully_invested: bool

@@ -1,5 +1,3 @@
-"""Схемы данных для работы с целевыми проектами."""
-
 from datetime import datetime
 from typing import Optional
 
@@ -14,8 +12,6 @@ from app.constants.constants import (
 
 
 class CharityProjectCreate(BaseModel):
-    """Схема создания целевого проекта."""
-
     name: str = Field(
         ...,
         min_length=NAME_MIN_LEN,
@@ -31,8 +27,6 @@ class CharityProjectCreate(BaseModel):
 
 
 class CharityProjectUpdate(BaseModel):
-    """Схема обновления целевого проекта."""
-
     name: Optional[str] = Field(
         None,
         min_length=NAME_MIN_LEN,
@@ -48,8 +42,6 @@ class CharityProjectUpdate(BaseModel):
 
 
 class CharityProjectDB(CharityProjectCreate):
-    """Схема данных проекта, возвращаемого из БД."""
-
     id: int
     invested_amount: int
     fully_invested: bool

@@ -1,5 +1,3 @@
-"""Маршруты для работы с пожертвованиями."""
-
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -26,7 +24,6 @@ async def create_donation(
     donation_in: DonationCreate,
     session: AsyncSession = Depends(get_async_session),  # noqa: B008
 ):
-    """Создать новое пожертвование."""
     donation = Donation(**donation_in.model_dump())
     session.add(donation)
 
@@ -44,7 +41,6 @@ async def create_donation(
 async def get_all_donations(
     session: AsyncSession = Depends(get_async_session),  # noqa: B008
 ):
-    """Получить список всех пожертвований."""
     result = await session.execute(
         select(Donation).order_by(Donation.create_date)
     )
@@ -59,7 +55,6 @@ async def get_all_donations(
 async def get_my_donations(
     session: AsyncSession = Depends(get_async_session),  # noqa: B008
 ):
-    """Получить список пожертвований пользователя."""
     result = await session.execute(
         select(Donation).order_by(Donation.create_date)
     )
@@ -70,7 +65,6 @@ async def get_my_donations(
 async def patch_donation(
     donation_id: int,
 ):
-    """Запрет редактирования пожертвования."""
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=ERR_NOT_FOUND,
@@ -81,7 +75,6 @@ async def patch_donation(
 async def put_donation(
     donation_id: int,
 ):
-    """Запрет полного обновления пожертвования."""
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=ERR_NOT_FOUND,
@@ -92,7 +85,6 @@ async def put_donation(
 async def delete_donation(
     donation_id: int,
 ):
-    """Запрет удаления пожертвования."""
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=ERR_NOT_FOUND,

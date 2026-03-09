@@ -8,8 +8,6 @@ ModelType = TypeVar('ModelType')
 
 
 class CRUDBase:
-    """Базовый класс для операций работы с БД."""
-
     def __init__(self, model: Type[ModelType]) -> None:
         self.model = model
 
@@ -17,11 +15,7 @@ class CRUDBase:
         self,
         session: AsyncSession,
     ) -> list[ModelType]:
-        """
-        Вернуть «открытые» объекты в порядке FIFO.
 
-        Предполагается, что модель имеет поля fully_invested и create_date.
-        """
         result = await session.execute(
             select(self.model)
             .where(self.model.fully_invested.is_(False))
@@ -36,11 +30,7 @@ class CRUDBase:
         targets: Sequence[ModelType],
         commit: bool = True,
     ) -> ModelType:
-        """
-        Сохранить изменения инвестиций в базе данных.
 
-        Параметр commit позволяет управлять тем, делать ли здесь commit.
-        """
         session.add_all([source, *targets])
         if commit:
             await session.commit()

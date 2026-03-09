@@ -1,5 +1,3 @@
-"""Пакет моделей приложения."""
-
 from app.models.charity_project import CharityProject
 from app.models.donation import Donation
 

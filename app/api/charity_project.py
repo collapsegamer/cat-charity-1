@@ -1,5 +1,3 @@
-"""Маршруты для работы с целевыми проектами."""
-
 from datetime import datetime
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -36,7 +34,6 @@ async def get_project_or_404(
     project_id: int,
     session: AsyncSession,
 ) -> CharityProject:
-    """Получить проект или вызвать 404."""
     project = await session.get(CharityProject, project_id)
     if project is None:
         raise HTTPException(
@@ -53,7 +50,6 @@ async def get_project_or_404(
 async def get_all_projects(
     session: AsyncSession = Depends(get_async_session),  # noqa: B008
 ):
-    """Получить список всех проектов."""
     result = await session.execute(
         select(CharityProject).order_by(CharityProject.id)
     )
@@ -68,7 +64,6 @@ async def create_project(
     project_in: CharityProjectCreate,
     session: AsyncSession = Depends(get_async_session),  # noqa: B008
 ):
-    """Создать новый проект."""
     existing = await session.execute(
         select(CharityProject).where(
             CharityProject.name == project_in.name
@@ -99,7 +94,6 @@ async def update_project(
     project_in: CharityProjectUpdate,
     session: AsyncSession = Depends(get_async_session),  # noqa: B008
 ):
-    """Обновить данные проекта."""
     project = await get_project_or_404(project_id, session)
 
     if project.fully_invested:
@@ -153,7 +147,6 @@ async def delete_project(
     project_id: int,
     session: AsyncSession = Depends(get_async_session),  # noqa: B008
 ):
-    """Удалить проект."""
     project = await get_project_or_404(project_id, session)
 
     if project.invested_amount > 0:

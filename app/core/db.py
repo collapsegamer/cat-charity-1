@@ -1,5 +1,3 @@
-"""Модуль для работы с асинхронным подключением к базе данных."""
-
 from typing import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import (
@@ -30,6 +28,5 @@ Base = declarative_base()
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
-    """Возвращает асинхронную сессию базы данных."""
     async with AsyncSessionLocal() as session:
         yield session

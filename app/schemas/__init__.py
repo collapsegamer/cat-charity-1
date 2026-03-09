@@ -1,5 +1,3 @@
-"""Схемы данных для сущностей приложения."""
-
 from app.schemas.charity_project import (
     CharityProjectCreate,
     CharityProjectUpdate,
