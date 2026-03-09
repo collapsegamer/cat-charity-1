@@ -8,7 +8,7 @@ cd cat-charity
 ```
 2. Установить зависимости
 ```
-python -m venv venv
+py -3.12 -m venv venv
 source venv/Scripts/activate
 pip install -r requirements.txt
 ```
