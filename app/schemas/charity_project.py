@@ -11,7 +11,8 @@ from app.constants.constants import (
 )
 
 
-class CharityProjectCreate(BaseModel):
+class CharityProjectBase(BaseModel):
+    """Общие поля для Create и DB схем."""
     name: str = Field(
         ...,
         min_length=NAME_MIN_LEN,
@@ -23,6 +24,8 @@ class CharityProjectCreate(BaseModel):
     )
     full_amount: PositiveInt
 
+
+class CharityProjectCreate(CharityProjectBase):
     model_config = ConfigDict(extra="forbid")
 
 
@@ -41,7 +44,7 @@ class CharityProjectUpdate(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
 
-class CharityProjectDB(CharityProjectCreate):
+class CharityProjectDB(CharityProjectBase):
     id: int
     invested_amount: int
     fully_invested: bool

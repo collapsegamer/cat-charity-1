@@ -48,7 +48,7 @@ async def get_project_or_404(
     response_model=list[CharityProjectDB],
 )
 async def get_all_projects(
-    session: AsyncSession = Depends(get_async_session),  # noqa: B008
+    session: AsyncSession = Depends(get_async_session),
 ):
     result = await session.execute(
         select(CharityProject).order_by(CharityProject.id)
@@ -62,7 +62,7 @@ async def get_all_projects(
 )
 async def create_project(
     project_in: CharityProjectCreate,
-    session: AsyncSession = Depends(get_async_session),  # noqa: B008
+    session: AsyncSession = Depends(get_async_session),
 ):
     existing = await session.execute(
         select(CharityProject).where(
@@ -92,7 +92,7 @@ async def create_project(
 async def update_project(
     project_id: int,
     project_in: CharityProjectUpdate,
-    session: AsyncSession = Depends(get_async_session),  # noqa: B008
+    session: AsyncSession = Depends(get_async_session),
 ):
     project = await get_project_or_404(project_id, session)
 
@@ -145,7 +145,7 @@ async def update_project(
 )
 async def delete_project(
     project_id: int,
-    session: AsyncSession = Depends(get_async_session),  # noqa: B008
+    session: AsyncSession = Depends(get_async_session),
 ):
     project = await get_project_or_404(project_id, session)
 

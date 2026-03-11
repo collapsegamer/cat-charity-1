@@ -22,15 +22,12 @@ ERR_NOT_FOUND = "Пожертвование не найдено."
 )
 async def create_donation(
     donation_in: DonationCreate,
-    session: AsyncSession = Depends(get_async_session),  # noqa: B008
+    session: AsyncSession = Depends(get_async_session),
 ):
     donation = Donation(**donation_in.model_dump())
     session.add(donation)
-
-    await invest_new_donation(donation, session)
-
-    await session.commit()
-    await session.refresh(donation)
+    await session.flush()
+    donation = await invest_new_donation(donation, session)
     return donation
 
 
@@ -39,7 +36,7 @@ async def create_donation(
     response_model=list[DonationFullInfoDB],
 )
 async def get_all_donations(
-    session: AsyncSession = Depends(get_async_session),  # noqa: B008
+    session: AsyncSession = Depends(get_async_session),
 ):
     result = await session.execute(
         select(Donation).order_by(Donation.create_date)
@@ -53,7 +50,7 @@ async def get_all_donations(
     response_model_exclude_none=True,
 )
 async def get_my_donations(
-    session: AsyncSession = Depends(get_async_session),  # noqa: B008
+    session: AsyncSession = Depends(get_async_session),
 ):
     result = await session.execute(
         select(Donation).order_by(Donation.create_date)

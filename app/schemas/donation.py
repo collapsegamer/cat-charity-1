@@ -5,14 +5,17 @@ from pydantic import BaseModel, PositiveInt
 from pydantic import ConfigDict
 
 
-class DonationCreate(BaseModel):
+class DonationBase(BaseModel):
+    """Общие поля для Create и DB схем."""
     full_amount: PositiveInt
     comment: Optional[str] = None
 
+
+class DonationCreate(DonationBase):
     model_config = ConfigDict(extra="forbid")
 
 
-class DonationDB(DonationCreate):
+class DonationDB(DonationBase):
     id: int
     create_date: datetime
     close_date: Optional[datetime] = None
