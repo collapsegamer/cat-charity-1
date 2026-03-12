@@ -6,7 +6,6 @@ from pydantic import ConfigDict
 
 
 class DonationBase(BaseModel):
-    """Общие поля для Create и DB схем."""
     full_amount: PositiveInt
     comment: Optional[str] = None
 

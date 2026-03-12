@@ -12,7 +12,6 @@ from app.constants.constants import (
 
 
 class CharityProjectBase(BaseModel):
-    """Общие поля для Create и DB схем."""
     name: str = Field(
         ...,
         min_length=NAME_MIN_LEN,
